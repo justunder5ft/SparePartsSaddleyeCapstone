@@ -29,6 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_Done_Button_released()
 {
+    QVideoFrame videoframe;
     bool isTrail = false;
     std::vector<std::string> categories_type;
     std::vector<std::string> categories_condition;
@@ -71,10 +72,10 @@ void MainWindow::on_Done_Button_released()
         categories_condition.push_back("Dry");
     }
 
-    copy_files(isTrail, categories_type, categories_condition);
+    copy_files(isTrail, categories_type, categories_condition, videoframe);
 }
 
-void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_type, std::vector<std::string> categories_condition)
+void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_type, std::vector<std::string> categories_condition, QVideoFrame videoframe)
 {
     std::string to_path;
     std::string from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
@@ -89,6 +90,7 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
         to_path = data_folder + "data_trail/test/Not_trail/" + file_name;
     }
 
+    //std::ofstream(to_path, std::ios::binary) << videoframe.bits();
     std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
 
     for(int i = 0; i < categories_type.size(); i++)

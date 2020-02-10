@@ -2,3 +2,4 @@
 *.DS_Store
 *.qbs
 Labeler/build-Labeler-Desktop_Qt_5_13_1_MinGW_64_bit-Release/*
+build-Labeler-Desktop_Qt_5_14_1_MinGW_64_bit-Release/*
