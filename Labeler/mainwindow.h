@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVideoFrame>
 #include <string>
 #include <vector>
 
@@ -23,6 +24,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void copy_files(bool isTrail, std::vector<std::string> categories, std::vector<std::string> categories_condition);
+    void copy_files(bool isTrail, std::vector<std::string> categories, std::vector<std::string> categories_condition, QVideoFrame videoframe);
 };
 #endif // MAINWINDOW_H
