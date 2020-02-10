@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QVideoFrame>
+#include <QAbstractVideoSurface>
 #include <string>
 #include <vector>
-
+#include <QVideoWidget>
+#include <QMediaPlayer>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -18,9 +20,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     std::string data_folder;
+    QMediaPlayer* player;
+    QVideoWidget* videoWidget;
 
 private slots:
     void on_Done_Button_released();
+
+    void on_BullshitButton_released();
 
 private:
     Ui::MainWindow *ui;

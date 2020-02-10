@@ -7,7 +7,12 @@
 #include <QLabel>
 #include <fstream>
 #include <QCheckBox>
+#include <QMediaPlayer>
+#include <QVideoProbe>
 #include <QDebug>
+#include <QAbstractVideoSurface>
+#include <QVideoWidget>
+#include <QMediaPlaylist>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -17,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     QPixmap video_frame(file_location.c_str());
     ui->label_frame->setPixmap(video_frame.scaled(1280, 720, Qt::KeepAspectRatioByExpanding));
+
+    player = new QMediaPlayer;
+    videoWidget = new QVideoWidget(ui->label_frame);
+
+    videoWidget->setAttribute(Qt::WA_DeleteOnClose);
+    player->setVideoOutput(videoWidget);
 
     data_folder = "C:/Users/ephra/Documents/Capstone/SparePartsSaddleyeCapstone/learning/";
 }
@@ -90,8 +101,8 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
         to_path = data_folder + "data_trail/test/Not_trail/" + file_name;
     }
 
-    //std::ofstream(to_path, std::ios::binary) << videoframe.bits();
-    std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
+    std::ofstream(to_path, std::ios::binary) << videoframe.bits();
+    //std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
 
     for(int i = 0; i < categories_type.size(); i++)
     {
@@ -105,3 +116,23 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
          std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
     }
 }
+
+void MainWindow::on_BullshitButton_released()
+{
+    player->setMedia(QUrl::fromLocalFile("C:/Users/ephra/Videos/Captures/The problematic queen.mp4"));
+    videoWidget->setGeometry(0,0,1280,720);
+    videoWidget->show();
+    player->play();
+
+    /*
+    QMediaPlayer *player = new QMediaPlayer();
+    QVideoProbe *probe = new QVideoProbe;
+
+    connect(probe, SIGNAL(videoFrameProbed(QVideoFrame)), this, SLOT(processFrame(QVideoFrame)));
+
+    probe->setSource(player); // Returns true, hopefully.
+
+    player->setVideoOutput(myVideoSurface);
+    player->setMedia(QUrl::fromLocalFile("observation.mp4"));
+    player->play(); // Start receiving frames as they get presented to myVideoSurface
+*/}
