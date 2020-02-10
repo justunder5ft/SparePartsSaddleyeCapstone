@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1400</width>
-    <height>900</height>
+    <height>1000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,30 +30,134 @@
      <string/>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_3">
+   <widget class="QCheckBox" name="TrailCheck">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>830</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Not Trail</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>830</y>
+      <x>200</x>
+      <y>810</y>
       <width>81</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Trail</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="AsphaltCheck">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Asphalt</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="DirtCheck">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dirt</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="GravelCheck">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Gravel</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="SidewalkCheck">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sidewalk</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WetCheck">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wet</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="DryCheck">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dry</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_9">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Snow?</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_10">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ice?</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Done_Button">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>850</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Done</string>
     </property>
    </widget>
   </widget>
