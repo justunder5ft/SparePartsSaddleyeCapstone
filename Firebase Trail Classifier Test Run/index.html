@@ -1,0 +1,80 @@
+<body>
+
+	<p>When you choose your picture, it will instantly upload to  Firebase Storage.</p>
+	<br>
+	
+	<form runat="server">
+		<input type='file' id="upload-button"  onclick="message()"/>
+		<img id="preview" src="#" height="480" length="720"/>
+	</form>
+		
+	<p>Link to <a href="https://console.firebase.google.com/u/0/project/trail-pics/storage/trail-pics.appspot.com/files">Firebase Storage</a></p>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-storage.js"></script>
+
+
+	<script type="text/javascript">
+		
+		// Your web app's Firebase configuration	
+		var firebaseConfig = {
+			apiKey: "AIzaSyB9iADMYdUVa_fIBNdFho_Wl_sSNCqWBKg",
+			authDomain: "trail-pics.firebaseapp.com",
+			databaseURL: "https://trail-pics.firebaseio.com",
+			projectId: "trail-pics",
+			storageBucket: "trail-pics.appspot.com",
+			messagingSenderId: "856311183400",
+			appId: "1:856311183400:web:e96a1d68498005347ddd1d",
+			measurementId: "G-3QQWKKDY8L"
+		};
+			
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		
+				
+		// display picture function
+		function displayPic(input) {
+			if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			
+			// apply image's file source to <img> tag
+			reader.onload = function(e) {
+			  $('#preview').attr('src', e.target.result);
+			  
+			  }
+			  reader.readAsDataURL(input.files[0]);
+		  }
+		}
+		
+		// show picture
+		$("#upload-button").change(function() {
+			displayPic(this);
+		});
+		
+		var upButton = document.getElementById("upload-button");
+		//var displayMessage = document.getElementById("snackbar");
+		
+		
+		// choosing a file, upload it
+		upButton.addEventListener('change', function(e){
+	
+				// grab file from upload button area
+				var file = e.target.files[0];
+				
+				// convert to Blob type to upload
+				var blob = new Blob([file], {type: file.type});
+				
+				// make reference to Storage folder path
+				var storageRef = firebase.storage().ref('folder/'+file.name);
+				
+				// upload Blob file
+				storageRef.put(blob);
+			
+			});
+	  
+	</script>
+
+</body>
