@@ -8,6 +8,8 @@
 #include <vector>
 #include <QVideoWidget>
 #include <QMediaPlayer>
+#include <QSlider>
+#include <QVideoProbe>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -22,10 +24,20 @@ public:
     std::string data_folder;
     QMediaPlayer* player;
     QVideoWidget* videoWidget;
+    QVideoProbe* frame_probe;
+    QSlider* m_slider;
+    qint64 m_duration;
+    void durationChanged(qint64 duration);
+    void positionChanged(qint64 progress);
+    void updateDurationInfo(qint64 currentInfo);
+    void processFrame(QVideoFrame the_frame);
+    bool isButtonClicked = false;
+    QVideoFrame checkedFrame;
+
 
 private slots:
     void on_Done_Button_released();
-
+    void seek(int seconds);
     void on_BullshitButton_released();
 
 private:

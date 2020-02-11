@@ -173,6 +173,22 @@
      <string>Some bullshit</string>
     </property>
    </widget>
+   <widget class="QSlider" name="PlaybackSlider">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>890</y>
+      <width>1251</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
