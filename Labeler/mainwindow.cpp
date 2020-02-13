@@ -15,6 +15,9 @@
 #include <QMediaPlaylist>
 #include <QSlider>
 #include <QTime>
+#include <QVideoSurfaceFormat>
+#include <QRect>
+#include <QVideoRendererControl>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,7 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_slider, &QSlider::sliderMoved, this, &MainWindow::seek);
     m_slider->setRange(0, player->duration() / 1000);
 
-    videoWidget->setAttribute(Qt::WA_DeleteOnClose);
     player->setVideoOutput(videoWidget);
 
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::durationChanged);
@@ -103,7 +105,7 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
 {
     std::string to_path;
     std::string from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
-    std::string file_name = "TestFile.txt";
+    std::string file_name = "TestFile.png";
 
     if(isTrail)
     {
@@ -115,7 +117,17 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
     }
 
     isButtonClicked = true;
-    std::ofstream(to_path, std::ios::binary) << videoframe.bits();
+    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.pixelFormat());
+    QImage frame_image(videoframe.bits(), videoframe.width(), videoframe.height(), videoframe.bytesPerLine(), imageFormat);
+
+    //frame_image.save(to_path.c_str(), 0);
+    /*THIS IS WHERE THE IMAGE WILL BE COPIED*/
+    for(int i = 0; i < frame_image.bitPlaneCount(); i++)
+    {
+        int BPL = frame_image.bytesPerLine();
+
+        std::ofstream(to_path, std::ios::binary) << *(frame_image.bits() + i);
+    }
     //std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
 
     for(int i = 0; i < categories_type.size(); i++)
@@ -133,11 +145,21 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
 
 void MainWindow::on_BullshitButton_released()
 {
+    if(frame_probe->setSource(player))
+    {
+        connect(frame_probe, &QVideoProbe::videoFrameProbed, this, &MainWindow::processFrame);// Returns true, hopefully.
+    }
 
-    frame_probe->setSource(player);
-    connect(frame_probe, SIGNAL(videoFrameProbed(QVideoFrame)), this, SLOT(processFrame(QVideoFrame)));// Returns true, hopefully.
     player->setMedia(QUrl::fromLocalFile("C:/Users/ephra/Videos/Captures/The problematic queen.mp4"));
+    //Set format of video
+    video_format.setFrameRate(frame_rate);
+    video_format.setFrameSize(1280,720);
+    video_format.setPixelAspectRatio(16,9);
+    //video_format.setProperty("Video", 1);
+    //QVideoRendererControl *rendererControl = QMediaService::player->requestControl<QVideoRendererControl *>();
+    //rendererControl->setSurface(videoWidget);
     videoWidget->setGeometry(0,0,1280,720);
+    //videoWidget->start(video_format);
     videoWidget->show();
     player->play();
 }
@@ -180,8 +202,50 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 }
 
 void MainWindow::processFrame(QVideoFrame the_frame) {
+    bool isTrail = false;
+    std::vector<std::string> categories_type;
+    std::vector<std::string> categories_condition;
 
-  checkedFrame = the_frame;
+    //Check if trail or not
+    if(ui->TrailCheck->checkState())
+    {
+        isTrail = true;
+    }
+
+    //Check all the states possible under trail type
+    if(ui->AsphaltCheck->checkState())
+    {
+        categories_type.push_back("Asphalt");
+    }
+
+    if(ui->DirtCheck->checkState())
+    {
+        categories_type.push_back("Dirt");
+    }
+
+    if(ui->GravelCheck->checkState())
+    {
+        categories_type.push_back("Gravel");
+    }
+
+    if(ui->SidewalkCheck->checkState())
+    {
+        categories_type.push_back("Sidewalk");
+    }
+
+    //Check all possible conditions of the trail
+    if(ui->WetCheck->checkState())
+    {
+        categories_condition.push_back("Wet");
+    }
+
+    if(ui->DryCheck->checkState())
+    {
+        categories_condition.push_back("Dry");
+    }
+
+  copy_files(isTrail, categories_type, categories_condition, the_frame);
+  qDebug() << "What";
 
   return;
 }

@@ -10,6 +10,7 @@
 #include <QMediaPlayer>
 #include <QSlider>
 #include <QVideoProbe>
+#include <QVideoSurfaceFormat>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,14 +24,19 @@ public:
     ~MainWindow();
     std::string data_folder;
     QMediaPlayer* player;
+    //QMediaService* player;
+    //FrameGrabber* videoWidget;
     QVideoWidget* videoWidget;
     QVideoProbe* frame_probe;
     QSlider* m_slider;
+    QVideoSurfaceFormat video_format;
+    QSize aspect_ratio;
     qint64 m_duration;
+    qreal frame_rate = 60;
+    void processFrame(QVideoFrame the_frame);
     void durationChanged(qint64 duration);
     void positionChanged(qint64 progress);
     void updateDurationInfo(qint64 currentInfo);
-    void processFrame(QVideoFrame the_frame);
     bool isButtonClicked = false;
     QVideoFrame checkedFrame;
 
