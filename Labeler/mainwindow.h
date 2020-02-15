@@ -11,6 +11,7 @@
 #include <QSlider>
 #include <QVideoProbe>
 #include <QVideoSurfaceFormat>
+#include <QBuffer>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -23,23 +24,18 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     std::string data_folder;
-    QMediaPlayer* player;
-    //QMediaService* player;
-    //FrameGrabber* videoWidget;
-    QVideoWidget* videoWidget;
-    QVideoProbe* frame_probe;
-    QSlider* m_slider;
-    QVideoSurfaceFormat video_format;
-    QSize aspect_ratio;
+    QMediaPlayer* player; //Responsible for actually playing the video
+    QVideoWidget* videoWidget; //Responsible for housing the video in UI
+    QVideoProbe* frame_probe; //Responsible for grabbing frames
+    QSlider* m_slider; //Responsible for controlling the video
     qint64 m_duration;
-    qreal frame_rate = 60;
-    void processFrame(QVideoFrame the_frame);
-    void durationChanged(qint64 duration);
-    void positionChanged(qint64 progress);
-    void updateDurationInfo(qint64 currentInfo);
-    bool isButtonClicked = false;
+    void processFrame(QVideoFrame the_frame); //Grab a given frame
+    void durationChanged(qint64 duration); //Update slider
+    void positionChanged(qint64 progress); //Update slider
+    void updateDurationInfo(qint64 currentInfo); //Update slider
+    void write(std::string to_path, QByteArray ba); //Write file to a folder
     QVideoFrame checkedFrame;
-
+    int file_num = 0;
 
 private slots:
     void on_Done_Button_released();
