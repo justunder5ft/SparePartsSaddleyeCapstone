@@ -12,6 +12,7 @@
 #include <QVideoProbe>
 #include <QVideoSurfaceFormat>
 #include <QBuffer>
+#include <QCloseEvent>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,6 +35,8 @@ public:
     void positionChanged(qint64 progress); //Update slider
     void updateDurationInfo(qint64 currentInfo); //Update slider
     void write(std::string to_path, QByteArray ba); //Write file to a folder
+    void closeEvent (QCloseEvent *event);
+
     QVideoFrame checkedFrame;
     int file_num = 0;
 

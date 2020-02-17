@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "framethreader.h"
+#include "common.h"
 #include <string>
 #include <QString>
 #include <QDir>
@@ -20,6 +22,8 @@
 #include <QVideoRendererControl>
 #include <QBuffer>
 #include <QSaveFile>
+#include <QThread>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -51,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Path where data frames are stored, edit as needed until i modularize
     data_folder = "C:/Users/ephra/Documents/Capstone/SparePartsSaddleyeCapstone/learning/";
+    qDebug() << global_processing_thread;
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +66,7 @@ MainWindow::~MainWindow()
 //This function is not being used right now, it just copies cory to a folder.
 void MainWindow::on_Done_Button_released()
 {
+    /*
     QVideoFrame videoframe;
     bool isTrail = false;
     std::vector<std::string> categories_type;
@@ -107,7 +113,7 @@ void MainWindow::on_Done_Button_released()
     videoframe = checkedFrame;
 
     copy_files(isTrail, categories_type, categories_condition, videoframe);
-}
+*/}
 
 //Writes files to data folder per frame
 void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_type, std::vector<std::string> categories_condition, QVideoFrame videoframe)
@@ -117,7 +123,7 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
     std::string from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
     std::string file_name = "TestFile";
 
-    real_file_name = file_name + std::to_string(file_num++) + ".png";
+    real_file_name = file_name + std::to_string(file_num) + ".png";
 
     //Write to trail folder if trail box is checked, write to not trail folder if not
     if(isTrail)
@@ -134,12 +140,15 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
     frame_image = frame_image.mirrored(false, true);
 
     QByteArray ba;
-    QBuffer buffer(&ba);
+    QBuffer buffer;
+    buffer.buffer().resize(1000000);
+    buffer.setBuffer(&ba);
 
     buffer.open(QIODevice::ReadWrite);
     frame_image.save(&buffer, "PNG");
-
     write(to_path, ba); //Write if trail or not trail
+
+    qDebug() << ba.size();
 
     //Write data for trail type categories (Asphalt, Sidewalk, etc.)
     for(int i = 0; i < categories_type.size(); i++)
@@ -160,6 +169,10 @@ void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_ty
 //(Will change name eventually) Select video and prepares it for play (hard coded to video in my local system at the moment)
 void MainWindow::on_BullshitButton_released()
 {
+    global_processing_thread->status_process = true;
+    global_processing_thread->setValues(file_num, player, ui, data_folder);
+
+
     //Set up frame prober
     if(frame_probe->setSource(player))
     {
@@ -171,7 +184,9 @@ void MainWindow::on_BullshitButton_released()
 
     //Display video
     videoWidget->setGeometry(0,0,1280,720);
-    videoWidget->show();
+    player->setPlaybackRate(4);
+    player->setMuted(true);
+    //videoWidget->show();
     player->play();
 }
 
@@ -214,11 +229,21 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 
 //Process by frame and save frame to appropriate locations
 void MainWindow::processFrame(QVideoFrame the_frame) {
+
+    global_processing_thread->frame_queue.push(the_frame);
+/*
+    //Otherwise, send the frame wherever.
     bool isTrail = false;
     std::vector<std::string> categories_type;
     std::vector<std::string> categories_condition;
     the_frame.map(QAbstractVideoBuffer::ReadOnly);
+*/
+    //Thread here
+    //FrameThreader new_thread(file_num++, the_frame, player, ui, data_folder);
+    //new_thread.start();
 
+    return;
+/*
     //Check if trail or not
     if(ui->TrailCheck->checkState())
     {
@@ -260,7 +285,7 @@ void MainWindow::processFrame(QVideoFrame the_frame) {
     copy_files(isTrail, categories_type, categories_condition, the_frame);
 
     return;
-}
+*/}
 
 //Write data to actual file locations
 void MainWindow::write(std::string to_path, QByteArray ba)
@@ -270,4 +295,25 @@ void MainWindow::write(std::string to_path, QByteArray ba)
     file_location.open(QIODevice::ReadWrite);
     file_location.write(ba);
     file_location.close();
+}
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "MIDI_MIDI",
+                                                                tr("Are you sure?\n"),
+                                                                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    qDebug()<< global_processing_thread;
+    if (resBtn != QMessageBox::Yes) {
+        event->ignore();
+    } else {
+        global_processing_thread->status_kill = true;
+        global_processing_thread->quit();
+        while(global_processing_thread->isRunning()) // wait for thread to kill itself
+        {
+            //do nothing
+        }
+        // then you may close the program
+        event->accept();
+    }
 }
