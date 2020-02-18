@@ -24,14 +24,16 @@
 #include <QSaveFile>
 #include <QThread>
 #include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //This is cory, this won't work on your machine, and really you don't need it
-    std::string file_location = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen";
     ui->setupUi(this);
+    //This is cory, this won't work on your machine, and really you don't need it(Just change this to any image file path)
+    //Or comment out this section
+    std::string file_location = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen";
     QPixmap video_frame(file_location.c_str());
     ui->label_frame->setPixmap(video_frame.scaled(1280, 720, Qt::KeepAspectRatioByExpanding));
     //End cory set up
@@ -66,104 +68,6 @@ MainWindow::~MainWindow()
 //This function is not being used right now, it just copies cory to a folder.
 void MainWindow::on_Done_Button_released()
 {
-    /*
-    QVideoFrame videoframe;
-    bool isTrail = false;
-    std::vector<std::string> categories_type;
-    std::vector<std::string> categories_condition;
-
-    //Check if trail or not
-    if(ui->TrailCheck->checkState())
-    {
-        isTrail = true;
-    }
-
-    //Check all the states possible under trail type
-    if(ui->AsphaltCheck->checkState())
-    {
-        categories_type.push_back("Asphalt");
-    }
-
-    if(ui->DirtCheck->checkState())
-    {
-        categories_type.push_back("Dirt");
-    }
-
-    if(ui->GravelCheck->checkState())
-    {
-        categories_type.push_back("Gravel");
-    }
-
-    if(ui->SidewalkCheck->checkState())
-    {
-        categories_type.push_back("Sidewalk");
-    }
-
-    //Check all possible conditions of the trail
-    if(ui->WetCheck->checkState())
-    {
-        categories_condition.push_back("Wet");
-    }
-
-    if(ui->DryCheck->checkState())
-    {
-        categories_condition.push_back("Dry");
-    }
-
-    videoframe = checkedFrame;
-
-    copy_files(isTrail, categories_type, categories_condition, videoframe);
-*/}
-
-//Writes files to data folder per frame
-void MainWindow::copy_files(bool isTrail, std::vector<std::string> categories_type, std::vector<std::string> categories_condition, QVideoFrame videoframe)
-{
-    std::string to_path;
-    std::string real_file_name;
-    std::string from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
-    std::string file_name = "TestFile";
-
-    real_file_name = file_name + std::to_string(file_num) + ".png";
-
-    //Write to trail folder if trail box is checked, write to not trail folder if not
-    if(isTrail)
-    {
-        to_path = data_folder + "data_trail/test/Trail/" + real_file_name;
-    }
-    else
-    {
-        to_path = data_folder + "data_trail/test/Not_trail/" + real_file_name;
-    }
-
-    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.pixelFormat());
-    QImage frame_image(videoframe.bits(), videoframe.width(), videoframe.height(), videoframe.bytesPerLine(), imageFormat);
-    frame_image = frame_image.mirrored(false, true);
-
-    QByteArray ba;
-    QBuffer buffer;
-    buffer.buffer().resize(1000000);
-    buffer.setBuffer(&ba);
-
-    buffer.open(QIODevice::ReadWrite);
-    frame_image.save(&buffer, "PNG");
-    write(to_path, ba); //Write if trail or not trail
-
-    qDebug() << ba.size();
-
-    //Write data for trail type categories (Asphalt, Sidewalk, etc.)
-    for(int i = 0; i < categories_type.size(); i++)
-    {
-         to_path = data_folder + "data/test/" + categories_type[i] + "/" + real_file_name;
-         write(to_path, ba);
-    }
-
-    //Write data for trail condition categories (Wet, Dry, Etc.)
-    for(int i = 0; i < categories_condition.size(); i++)
-    {
-         to_path = data_folder + "data_moist/test/" + categories_condition[i] + "/" + real_file_name;
-         //std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
-         write(to_path, ba);
-    }
 }
 
 //(Will change name eventually) Select video and prepares it for play (hard coded to video in my local system at the moment)
@@ -172,6 +76,7 @@ void MainWindow::on_BullshitButton_released()
     global_processing_thread->status_process = true;
     global_processing_thread->setValues(file_num, player, ui, data_folder);
 
+    qDebug() << "What";
 
     //Set up frame prober
     if(frame_probe->setSource(player))
@@ -180,14 +85,13 @@ void MainWindow::on_BullshitButton_released()
     }
 
     //Video file on my system, change as needed
-    player->setMedia(QUrl::fromLocalFile("C:/Users/ephra/Videos/Captures/The problematic queen.mp4"));
+    player->setMedia(QUrl::fromLocalFile(video_file_source));
 
     //Display video
     videoWidget->setGeometry(0,0,1280,720);
-    player->setPlaybackRate(4);
+    player->setPlaybackRate(playback_rate);
     player->setMuted(true);
-    //videoWidget->show();
-    player->play();
+    //player->play();
 }
 
 /* Code taken from Qt's media player example */
@@ -204,6 +108,8 @@ void MainWindow::positionChanged(qint64 progress)
         m_slider->setValue(progress / 1000);
 
     updateDurationInfo(progress / 1000);
+
+       qDebug() << "Player Position" << player->position();
 }
 
 void MainWindow::seek(int seconds)
@@ -231,61 +137,7 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 void MainWindow::processFrame(QVideoFrame the_frame) {
 
     global_processing_thread->frame_queue.push(the_frame);
-/*
-    //Otherwise, send the frame wherever.
-    bool isTrail = false;
-    std::vector<std::string> categories_type;
-    std::vector<std::string> categories_condition;
-    the_frame.map(QAbstractVideoBuffer::ReadOnly);
-*/
-    //Thread here
-    //FrameThreader new_thread(file_num++, the_frame, player, ui, data_folder);
-    //new_thread.start();
-
-    return;
-/*
-    //Check if trail or not
-    if(ui->TrailCheck->checkState())
-    {
-        isTrail = true;
-    }
-
-    //Check all the states possible under trail type
-    if(ui->AsphaltCheck->checkState())
-    {
-        categories_type.push_back("Asphalt");
-    }
-
-    if(ui->DirtCheck->checkState())
-    {
-        categories_type.push_back("Dirt");
-    }
-
-    if(ui->GravelCheck->checkState())
-    {
-        categories_type.push_back("Gravel");
-    }
-
-    if(ui->SidewalkCheck->checkState())
-    {
-        categories_type.push_back("Sidewalk");
-    }
-
-    //Check all possible conditions of the trail
-    if(ui->WetCheck->checkState())
-    {
-        categories_condition.push_back("Wet");
-    }
-
-    if(ui->DryCheck->checkState())
-    {
-        categories_condition.push_back("Dry");
-    }
-
-    copy_files(isTrail, categories_type, categories_condition, the_frame);
-
-    return;
-*/}
+}
 
 //Write data to actual file locations
 void MainWindow::write(std::string to_path, QByteArray ba)
@@ -299,7 +151,7 @@ void MainWindow::write(std::string to_path, QByteArray ba)
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "MIDI_MIDI",
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Labeler",
                                                                 tr("Are you sure?\n"),
                                                                 QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
                                                                 QMessageBox::Yes);
@@ -316,4 +168,58 @@ void MainWindow::closeEvent (QCloseEvent *event)
         // then you may close the program
         event->accept();
     }
+}
+
+void MainWindow::on_play_button_released()
+{
+    player->play();
+}
+
+void MainWindow::on_pause_button_released()
+{
+    player->pause();
+}
+
+void MainWindow::on_file_select_button_released()
+{
+    QString path = qApp->applicationDirPath();
+    QDir dir;
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+            "Choose video file", path,
+            "Video (*.mp4)");
+    QFile file(fileName);
+
+    if(dir.exists(path))
+    {
+        if (file.open(QIODevice::ReadOnly))
+        {
+            video_file_source = fileName;
+        }
+
+    }
+
+    file.close();
+}
+
+
+void MainWindow::on_data_folder_button_released()
+{
+    QString path = qApp->applicationDirPath();
+    QDir dir;
+
+    QString fileName = QFileDialog::getExistingDirectory(this,
+            "Choose location of data folder", path);
+    QFile file(fileName);
+
+    if(dir.exists(path))
+    {
+        if (file.open(QIODevice::ReadOnly))
+        {
+            data_folder = fileName;
+        }
+
+    }
+
+    file.close();
 }

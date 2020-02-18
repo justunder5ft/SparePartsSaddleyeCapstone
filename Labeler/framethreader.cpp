@@ -11,7 +11,7 @@ FrameThreader::FrameThreader()
     return;
 }
 
-void FrameThreader::setValues(int new_file_num, QMediaPlayer* new_player, Ui::MainWindow* new_ui, std::string new_data_folder)
+void FrameThreader::setValues(int new_file_num, QMediaPlayer* new_player, Ui::MainWindow* new_ui, QString new_data_folder)
 {
     file_num = new_file_num;
     player = new_player;
@@ -39,14 +39,14 @@ void FrameThreader::run()
     }
 }
 
-void FrameThreader::copy_files(bool isTrail, std::vector<std::string> categories_type, std::vector<std::string> categories_condition)
+void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_type, std::vector<QString> categories_condition)
 {
-    std::string to_path;
-    std::string real_file_name;
-    std::string from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
-    std::string file_name = "TestFile";
+    QString to_path;
+    QString real_file_name;
+    QString from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
+    QString file_name = "TestFile";
 
-    real_file_name = file_name + std::to_string(file_num++) + ".png";
+    real_file_name = file_name + QString::number(file_num++) + ".png";
 
     //Write to trail folder if trail box is checked, write to not trail folder if not
     if(isTrail)
@@ -71,8 +71,6 @@ void FrameThreader::copy_files(bool isTrail, std::vector<std::string> categories
     frame_image.save(&buffer, "PNG");
     write(to_path, ba); //Write if trail or not trail
 
-    qDebug() << ba.size();
-
     //Write data for trail type categories (Asphalt, Sidewalk, etc.)
     for(int i = 0; i < categories_type.size(); i++)
     {
@@ -93,17 +91,15 @@ void FrameThreader::processFrame()
 {
     if(frame_queue.empty())
     {
-        qDebug() << "No";
         return;
     }
 
-    qDebug() << "Going";
     videoframe = frame_queue.front();
     frame_queue.pop();
 
     bool isTrail = false;
-    std::vector<std::string> categories_type;
-    std::vector<std::string> categories_condition;
+    std::vector<QString> categories_type;
+    std::vector<QString> categories_condition;
     videoframe.map(QAbstractVideoBuffer::ReadOnly);
 
     //Check if trail or not
@@ -150,9 +146,9 @@ void FrameThreader::processFrame()
 }
 
 //Write data to actual file locations
-void FrameThreader::write(std::string to_path, QByteArray ba)
+void FrameThreader::write(QString to_path, QByteArray ba)
 {
-    QFile file_location(to_path.c_str());
+    QFile file_location(to_path);
 
     file_location.open(QIODevice::ReadWrite);
     file_location.write(ba);

@@ -24,12 +24,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::string data_folder;
+    QString data_folder;
     QMediaPlayer* player; //Responsible for actually playing the video
     QVideoWidget* videoWidget; //Responsible for housing the video in UI
     QVideoProbe* frame_probe; //Responsible for grabbing frames
     QSlider* m_slider; //Responsible for controlling the video
     qint64 m_duration;
+    qreal playback_rate = 1;
     void processFrame(QVideoFrame the_frame); //Grab a given frame
     void durationChanged(qint64 duration); //Update slider
     void positionChanged(qint64 progress); //Update slider
@@ -39,14 +40,18 @@ public:
 
     QVideoFrame checkedFrame;
     int file_num = 0;
+    QString video_file_source = "C:/Users/ephra/Videos/Captures/Arcana.mp4";
 
 private slots:
     void on_Done_Button_released();
     void seek(int seconds);
     void on_BullshitButton_released();
+    void on_play_button_released();
+    void on_pause_button_released();
+    void on_file_select_button_released();
+    void on_data_folder_button_released();
 
 private:
     Ui::MainWindow *ui;
-    void copy_files(bool isTrail, std::vector<std::string> categories, std::vector<std::string> categories_condition, QVideoFrame videoframe);
 };
 #endif // MAINWINDOW_H
