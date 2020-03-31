@@ -202,6 +202,7 @@ void MainWindow::on_file_select_button_released()
         if (file.open(QIODevice::ReadOnly))
         {
             video_file_source = fileName;
+            global_processing_thread->SetVideoName(fileName);// set the videoName in the thread for naming conventions.
         }
 
     }

@@ -20,12 +20,14 @@ public:
     int file_num = 0;
     int frame_skip = 1; // amount of frames to skip before queueing
     int frame_count = 0; // current frame count
+    QString video_name = "NO_VID";
     QVideoFrame videoframe;
     QMediaPlayer* player;
     Ui::MainWindow* ui;
     QString data_folder;
     QString name;
     std::queue<QVideoFrame> frame_queue;
+    void SetVideoName(QString videoPath);
 
     bool status_process = false;
     bool status_kill = false;

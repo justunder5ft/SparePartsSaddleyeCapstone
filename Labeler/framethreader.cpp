@@ -45,7 +45,8 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
     QString to_path;
     QString real_file_name;
     QString from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
-    QString file_name = "TestFile";
+    QString file_name = video_name;
+
     QDir dir ;
 
     real_file_name = file_name + QString::number(file_num++) + ".png";
@@ -195,4 +196,15 @@ void FrameThreader::on_FrameStepper_valueChanged(int arg1)
 {
     //do nothing
     return;
+}
+
+void FrameThreader::SetVideoName(QString videoPath){
+    QStringList VideoDelimList = videoPath.split('/');
+    QString Temp = VideoDelimList.last(); // get rid of the path
+
+    QStringList VideoNameList = Temp.split('.'); // get rid of the extention.
+    video_name = VideoNameList.first(); // save the name
+
+    //qDebug() << VideoNameList.first(); // debug
+   return ;
 }
