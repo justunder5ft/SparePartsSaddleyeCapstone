@@ -37,6 +37,7 @@ public:
     void updateDurationInfo(qint64 currentInfo); //Update slider
     void write(std::string to_path, QByteArray ba); //Write file to a folder
     void closeEvent (QCloseEvent *event);
+    //int frameCount;
 
     QVideoFrame checkedFrame;
     int file_num = 0;

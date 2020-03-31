@@ -1,6 +1,7 @@
 #include "framethreader.h"
 #include <QMediaPlayer>
 #include <QFile>
+#include <QDir>
 #include <QVideoFrame>
 #include <QBuffer>
 #include "common.h"
@@ -45,17 +46,30 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
     QString real_file_name;
     QString from_path = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen.png";
     QString file_name = "TestFile";
+    QDir dir ;
 
     real_file_name = file_name + QString::number(file_num++) + ".png";
 
+
+    //qDebug() << "DataFolder : " <<data_folder;
     //Write to trail folder if trail box is checked, write to not trail folder if not
     if(isTrail)
     {
-        to_path = data_folder + "data_trail/test/Trail/" + real_file_name;
+        to_path = data_folder + "/data_trail/test/Trail" ;
+        if(!dir.exists(to_path))
+        {
+            dir.mkpath(to_path);
+        }
+        to_path = data_folder + "/data_trail/test/Trail/" + real_file_name;
     }
     else
     {
-        to_path = data_folder + "data_trail/test/Not_trail/" + real_file_name;
+        to_path = data_folder + "/data_trail/test/Not_trail" ;
+        if(!dir.exists(to_path))
+        {
+            dir.mkpath(to_path);
+        }
+        to_path = data_folder + "/data_trail/test/Not_trail/" + real_file_name;
     }
 
     QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.pixelFormat());
@@ -74,14 +88,24 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
     //Write data for trail type categories (Asphalt, Sidewalk, etc.)
     for(int i = 0; i < categories_type.size(); i++)
     {
-         to_path = data_folder + "data/test/" + categories_type[i] + "/" + real_file_name;
+        to_path = data_folder + "/data/test/" + categories_type[i] ;
+        if(!dir.exists(to_path))
+        {
+            dir.mkpath(to_path);
+        }
+         to_path = data_folder + "/data/test/" + categories_type[i] + "/" + real_file_name;
          write(to_path, ba);
     }
 
     //Write data for trail condition categories (Wet, Dry, Etc.)
     for(int i = 0; i < categories_condition.size(); i++)
     {
-         to_path = data_folder + "data_moist/test/" + categories_condition[i] + "/" + real_file_name;
+        to_path = data_folder + "/data/test/" + categories_condition[i] ;
+        if(!dir.exists(to_path))
+        {
+            dir.mkpath(to_path);
+        }
+         to_path = data_folder + "/data_moist/test/" + categories_condition[i] + "/" + real_file_name;
          //std::ofstream(to_path, std::ios::binary) << std::ifstream(from_path, std::ios::binary).rdbuf();
          write(to_path, ba);
     }
@@ -96,6 +120,7 @@ void FrameThreader::processFrame()
 
     videoframe = frame_queue.front();
     frame_queue.pop();
+    frame_count++;
 
     bool isTrail = false;
     std::vector<QString> categories_type;
@@ -140,9 +165,20 @@ void FrameThreader::processFrame()
         categories_condition.push_back("Dry");
     }
 
-    copy_files(isTrail, categories_type, categories_condition);
+    if(frame_count%ui->FrameStepper->value() == 0)
+    {
+        copy_files(isTrail, categories_type, categories_condition);
+        frame_count = 0;
+    }
+//    copy_files(isTrail, categories_type, categories_condition);
 
     return;
+}
+
+void FrameThreader::UpdateDataFolder(QString new_data_folder)
+{
+    data_folder = new_data_folder; // set the new data folder
+    qDebug() << "NEW Data Folder : " << data_folder;
 }
 
 //Write data to actual file locations
@@ -153,4 +189,10 @@ void FrameThreader::write(QString to_path, QByteArray ba)
     file_location.open(QIODevice::ReadWrite);
     file_location.write(ba);
     file_location.close();
+}
+
+void FrameThreader::on_FrameStepper_valueChanged(int arg1)
+{
+    //do nothing
+    return;
 }

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //This is cory, this won't work on your machine, and really you don't need it(Just change this to any image file path)
     //Or comment out this section
-    std::string file_location = "C:/Users/ephra/Pictures/This folder is cursed/Cory using is special laser vision glasses just like cyclops from the xmen";
+    std::string file_location = "C:/Users/tcarr/Pictures/Capture.png";
     QPixmap video_frame(file_location.c_str());
     ui->label_frame->setPixmap(video_frame.scaled(1280, 720, Qt::KeepAspectRatioByExpanding));
     //End cory set up
@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_slider = (ui->PlaybackSlider);
     connect(m_slider, &QSlider::sliderMoved, this, &MainWindow::seek);
     m_slider->setRange(0, player->duration() / 1000);
+    //frameCount=0;
 
     //Connect media player to ui element
     player->setVideoOutput(videoWidget);
@@ -91,7 +92,7 @@ void MainWindow::on_BullshitButton_released()
     videoWidget->setGeometry(0,0,1280,720);
     player->setPlaybackRate(playback_rate);
     player->setMuted(true);
-    //player->play();
+    player->play();
 }
 
 /* Code taken from Qt's media player example */
@@ -109,7 +110,7 @@ void MainWindow::positionChanged(qint64 progress)
 
     updateDurationInfo(progress / 1000);
 
-       qDebug() << "Player Position" << player->position();
+       //qDebug() << "Player Position" << player->position();
 }
 
 void MainWindow::seek(int seconds)
@@ -136,7 +137,13 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 //Process by frame and save frame to appropriate locations
 void MainWindow::processFrame(QVideoFrame the_frame) {
 
-    global_processing_thread->frame_queue.push(the_frame);
+   // frameCount++;// update the frame count
+   //if(frameCount % global_processing_thread->frame_skip == 0) // if frame not skipped
+   //{
+        global_processing_thread->frame_queue.push(the_frame); // push it to the queue for processing
+   // }
+
+
 }
 
 //Write data to actual file locations
@@ -208,18 +215,16 @@ void MainWindow::on_data_folder_button_released()
     QString path = qApp->applicationDirPath();
     QDir dir;
 
-    QString fileName = QFileDialog::getExistingDirectory(this,
+    QString newDataFolderName = QFileDialog::getExistingDirectory(this,
             "Choose location of data folder", path);
-    QFile file(fileName);
 
     if(dir.exists(path))
     {
-        if (file.open(QIODevice::ReadOnly))
-        {
-            data_folder = fileName;
-        }
-
+            data_folder = newDataFolderName;
+            global_processing_thread->UpdateDataFolder(newDataFolderName);
     }
 
-    file.close();
+   // file.close();
 }
+
+
