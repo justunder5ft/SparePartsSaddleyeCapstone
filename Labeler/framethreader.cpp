@@ -49,7 +49,7 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
 
     QDir dir ;
 
-    real_file_name = file_name + QString::number(file_num++) + ".png";
+    real_file_name = file_name + QString::number(file_num++) + ".jpeg";
 
 
     //qDebug() << "DataFolder : " <<data_folder;
@@ -83,7 +83,7 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
     buffer.setBuffer(&ba);
 
     buffer.open(QIODevice::ReadWrite);
-    frame_image.save(&buffer, "PNG");
+    frame_image.save(&buffer, "JPEG");
     write(to_path, ba); //Write if trail or not trail
 
     //Write data for trail type categories (Asphalt, Sidewalk, etc.)
@@ -171,7 +171,6 @@ void FrameThreader::processFrame()
         copy_files(isTrail, categories_type, categories_condition);
         frame_count = 0;
     }
-//    copy_files(isTrail, categories_type, categories_condition);
 
     return;
 }
@@ -179,7 +178,6 @@ void FrameThreader::processFrame()
 void FrameThreader::UpdateDataFolder(QString new_data_folder)
 {
     data_folder = new_data_folder; // set the new data folder
-    qDebug() << "NEW Data Folder : " << data_folder;
 }
 
 //Write data to actual file locations
@@ -192,12 +190,6 @@ void FrameThreader::write(QString to_path, QByteArray ba)
     file_location.close();
 }
 
-void FrameThreader::on_FrameStepper_valueChanged(int arg1)
-{
-    //do nothing
-    return;
-}
-
 void FrameThreader::SetVideoName(QString videoPath){
     QStringList VideoDelimList = videoPath.split('/');
     QString Temp = VideoDelimList.last(); // get rid of the path
@@ -205,6 +197,5 @@ void FrameThreader::SetVideoName(QString videoPath){
     QStringList VideoNameList = Temp.split('.'); // get rid of the extention.
     video_name = VideoNameList.first(); // save the name
 
-    //qDebug() << VideoNameList.first(); // debug
    return ;
 }

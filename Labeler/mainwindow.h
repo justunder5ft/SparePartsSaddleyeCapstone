@@ -44,9 +44,8 @@ public:
     QString video_file_source = "C:/Users/ephra/Videos/Captures/Arcana.mp4";
 
 private slots:
-    void on_Done_Button_released();
     void seek(int seconds);
-    void on_BullshitButton_released();
+    void on_process_button_released();
     void on_play_button_released();
     void on_pause_button_released();
     void on_file_select_button_released();

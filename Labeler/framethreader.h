@@ -33,6 +33,9 @@ public:
     bool status_kill = false;
 private slots:
     void on_FrameStepper_valueChanged(int arg1);
+    void on_play_button_pressed();
+    void on_BullshitButton_released();
+    void on_process_button_released();
 };
 
 #endif // FRAMETHREADER_H

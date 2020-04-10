@@ -66,18 +66,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//This function is not being used right now, it just copies cory to a folder.
-void MainWindow::on_Done_Button_released()
-{
-}
-
 //(Will change name eventually) Select video and prepares it for play (hard coded to video in my local system at the moment)
-void MainWindow::on_BullshitButton_released()
+void MainWindow::on_process_button_released()
 {
     global_processing_thread->status_process = true;
     global_processing_thread->setValues(file_num, player, ui, data_folder);
-
-    qDebug() << "What";
 
     //Set up frame prober
     if(frame_probe->setSource(player))
@@ -136,14 +129,7 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 
 //Process by frame and save frame to appropriate locations
 void MainWindow::processFrame(QVideoFrame the_frame) {
-
-   // frameCount++;// update the frame count
-   //if(frameCount % global_processing_thread->frame_skip == 0) // if frame not skipped
-   //{
         global_processing_thread->frame_queue.push(the_frame); // push it to the queue for processing
-   // }
-
-
 }
 
 //Write data to actual file locations
@@ -224,8 +210,6 @@ void MainWindow::on_data_folder_button_released()
             data_folder = newDataFolderName;
             global_processing_thread->UpdateDataFolder(newDataFolderName);
     }
-
-   // file.close();
 }
 
 
