@@ -9,8 +9,8 @@ import glob
 import random as rand
 import shutil
 
-# incomplete - implement de_extract
-# incomplete - add command line parsing/options
+# @incomplete - implement de_extract
+# @incomplete - add command line parsing/options
 #   select the partition sizes
 #   give source
 #   give destination
