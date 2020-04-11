@@ -3,7 +3,17 @@ This is a docstring
 
 Got a lot of this from:
 https://gist.github.com/fchollet/0830affa1f7f19fd47b06d4cf89ed44d
-as well as from my colaboratory doc
+as well as from my collaboratory doc
+
+=== CLASSES ===
+Asphalt
+Sidewalk
+Gravel
+Off-road
+
+@incomplete - add more convolution layers
+@incomplete - get estimate for training time
+@incomplete - look into cloud computing (if the above is too large)
 """
 from keras.models import Sequential  # this is the model
 from keras.layers import Conv2D, MaxPooling2D, MaxPool2D  # for the convolutional layer and pooling layer
@@ -18,12 +28,14 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # Image format
 IMG_HEIGHT = 720
 IMG_WIDTH = 1280
+DATA_PATH = 'D:/Training Data/data'
 
-TRAINING_DATA_DIR, TRAINING_DATA_SIZE = './data/train', 131         # path to the training data and how many files are in there
-VALIDATION_DATA_DIR, VALIDATION_DATA_SIZE = './data/validation', 25   # path to the validation data and how many files are in there
+# TODO: change these directories
+TRAINING_DATA_DIR, TRAINING_DATA_SIZE = './data/train', 131  # path to the training data and how many files are in there
+VALIDATION_DATA_DIR, VALIDATION_DATA_SIZE = './data/validation', 25  # path to the validation data and how many files are in there
 TEST_DATA_DIR, TEST_DATA_SIZE = './data/test', 30  # path to the test data
 
-EPOCHS = 1          # Change these as we need to
+EPOCHS = 5          # Change these as we need to
 BATCH_SIZE = 10     # This doesn't really matter right now since we have like no photos...
 
 if K.image_data_format() == 'channels_first':  # i think channels first is the default so should be fine
@@ -55,7 +67,6 @@ model.add(Activation('sigmoid'))
 model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
-
 
 # +++GETTING THE DATA+++
 # this is the augmentation configuration we will use for training
@@ -105,4 +116,4 @@ model.evaluate_generator(  # testing the model against our test data
     workers=1
 )
 
-# model.save_weights('first_try.h5')  dont really need to save models rn
+# model.save_weights('first_try.h5')  # don't really need to save models rn
