@@ -16,7 +16,7 @@ Off-road
 @incomplete - look into cloud computing (if the above is too large)
 """
 from keras.models import Sequential  # this is the model
-from keras.layers import Conv2D, MaxPooling2D, MaxPool2D  # for the convolutional layer and pooling layer
+from keras.layers import Conv2D, MaxPool2D  # for the convolution layer and pooling layer
 from keras.layers import Flatten, Dense, Dropout, Activation  # some neat layers that help us out 
 from keras import backend as K  # channels
 from keras.preprocessing.image import ImageDataGenerator  # for loading the images into the appropriate format
@@ -28,12 +28,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # Image format
 IMG_HEIGHT = 720
 IMG_WIDTH = 1280
-DATA_PATH = 'D:/Training Data/data'
+DATA_PATH = 'D:/Training Data/partitioned_data'
 
-# TODO: change these directories
-TRAINING_DATA_DIR, TRAINING_DATA_SIZE = './data/train', 131  # path to the training data and how many files are in there
-VALIDATION_DATA_DIR, VALIDATION_DATA_SIZE = './data/validation', 25  # path to the validation data and how many files are in there
-TEST_DATA_DIR, TEST_DATA_SIZE = './data/test', 30  # path to the test data
+TRAINING_DATA_DIR, TRAINING_DATA_SIZE = 'D:/Training Data/partitioned_data/train', 73871
+VALIDATION_DATA_DIR, VALIDATION_DATA_SIZE = 'D:/Training Data/partitioned_data/validate', 9406
+TEST_DATA_DIR, TEST_DATA_SIZE = 'D:/Training Data/partitioned_data/test', 9405
 
 EPOCHS = 5          # Change these as we need to
 BATCH_SIZE = 10     # This doesn't really matter right now since we have like no photos...
