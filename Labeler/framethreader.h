@@ -13,7 +13,7 @@ public:
     void setValues(int new_file_num, QMediaPlayer* new_player, Ui::MainWindow* new_ui, QString new_data_folder);
     void run();
     void write(QString to_path, QByteArray ba);
-    void copy_files(bool isTrail, std::vector<QString> categories_type, std::vector<QString> categories_condition);
+    void copy_files(bool isTrail, std::vector<QString> categories_type);
     void processFrame();
     void UpdateDataFolder(QString new_data_folder);
 
@@ -36,6 +36,7 @@ private slots:
     void on_play_button_pressed();
     void on_BullshitButton_released();
     void on_process_button_released();
+    void on_frame_progress_box_textChanged();
 };
 
 #endif // FRAMETHREADER_H

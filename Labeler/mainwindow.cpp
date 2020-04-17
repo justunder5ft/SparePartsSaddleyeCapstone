@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::positionChanged);
 
     //Path where data frames are stored, edit as needed until i modularize
-    data_folder = "C:/Users/ephra/Documents/Capstone/SparePartsSaddleyeCapstone/learning/";
+    data_folder = QDir::currentPath();
+    qDebug() << QDir::currentPath();
     qDebug() << global_processing_thread;
 }
 
@@ -69,6 +70,7 @@ MainWindow::~MainWindow()
 //(Will change name eventually) Select video and prepares it for play (hard coded to video in my local system at the moment)
 void MainWindow::on_process_button_released()
 {
+    file_num = 0;
     global_processing_thread->status_process = true;
     global_processing_thread->setValues(file_num, player, ui, data_folder);
 
@@ -85,7 +87,8 @@ void MainWindow::on_process_button_released()
     videoWidget->setGeometry(0,0,1280,720);
     player->setPlaybackRate(playback_rate);
     player->setMuted(true);
-    player->play();
+    global_total_enqueued_frames = 0;
+    global_total_processed_frames = 0;
 }
 
 /* Code taken from Qt's media player example */
@@ -130,6 +133,7 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 //Process by frame and save frame to appropriate locations
 void MainWindow::processFrame(QVideoFrame the_frame) {
         global_processing_thread->frame_queue.push(the_frame); // push it to the queue for processing
+        global_total_enqueued_frames++;
 }
 
 //Write data to actual file locations

@@ -240,6 +240,42 @@
      <string>Frame skip amount</string>
     </property>
    </widget>
+   <widget class="QLabel" name="FrameProgressLabel">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>850</y>
+      <width>371</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Frames Processed: 0 of 0</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CustomCheck">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="CustomFolderTextBox">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>810</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
