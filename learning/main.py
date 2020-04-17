@@ -25,7 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plot
 import os  # setting the log level
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 # Image format
@@ -64,10 +64,10 @@ model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(4))
-model.add(Activation('sigmoid'))
+model.add(Activation('softmax'))
 
 model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
+              optimizer='adam',
               metrics=['accuracy'])
 
 # +++GETTING THE DATA+++
@@ -118,4 +118,4 @@ model.evaluate_generator(  # testing the model against our test data
     workers=1
 )
 
-# model.save_weights('first_try.h5')  # don't really need to save models rn
+model.save_weights('first_try.h5')  # don't really need to save models rn
