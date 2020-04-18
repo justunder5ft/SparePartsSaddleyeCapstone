@@ -1,6 +1,7 @@
 #ifndef FRAMETHREADER_H
 #define FRAMETHREADER_H
 #include "ui_mainwindow.h"
+#include "framedata.h"
 #include <QThread>
 #include <QVideoFrame>
 #include <QMediaPlayer>
@@ -21,12 +22,12 @@ public:
     int frame_skip = 1; // amount of frames to skip before queueing
     int frame_count = 0; // current frame count
     QString video_name = "NO_VID";
-    QVideoFrame videoframe;
+    framedata videoframe;
     QMediaPlayer* player;
     Ui::MainWindow* ui;
     QString data_folder;
     QString name;
-    std::queue<QVideoFrame> frame_queue;
+    std::queue<framedata> frame_queue;
     void SetVideoName(QString videoPath);
 
     bool status_process = false;

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "framethreader.h"
+#include "framedata.h"
 #include "common.h"
 #include <string>
 #include <QString>
@@ -89,6 +90,10 @@ void MainWindow::on_process_button_released()
     player->setMuted(true);
     global_total_enqueued_frames = 0;
     global_total_processed_frames = 0;
+    while(!global_processing_thread->frame_queue.empty())
+    {
+        global_processing_thread->frame_queue.pop();
+    }
 }
 
 /* Code taken from Qt's media player example */
@@ -132,7 +137,18 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
 
 //Process by frame and save frame to appropriate locations
 void MainWindow::processFrame(QVideoFrame the_frame) {
-        global_processing_thread->frame_queue.push(the_frame); // push it to the queue for processing
+        framedata temp;
+        temp.data = the_frame;
+        temp.asphalt = ui->AsphaltCheck->checkState();
+        temp.gravel = ui->GravelCheck->checkState();
+        temp.dirt = ui->DirtCheck->checkState();
+        temp.sidewalk = ui->SidewalkCheck->checkState();
+        temp.trail = ui->TrailCheck->checkState();
+        temp.dry = ui->DryCheck->checkState();
+        temp.wet = ui->WetCheck->checkState();
+        temp.custom = ui->CustomCheck->checkState();
+        temp.custom_name = ui->CustomFolderTextBox->text();
+        global_processing_thread->frame_queue.push(temp); // push it to the queue for processing
         global_total_enqueued_frames++;
 }
 

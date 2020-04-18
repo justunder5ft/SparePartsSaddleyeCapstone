@@ -72,8 +72,8 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
         to_path = data_folder + "/Not_trail/" + real_file_name;
     }
 
-    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.pixelFormat());
-    QImage frame_image(videoframe.bits(), videoframe.width(), videoframe.height(), videoframe.bytesPerLine(), imageFormat);
+    QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.data.pixelFormat());
+    QImage frame_image(videoframe.data.bits(), videoframe.data.width(), videoframe.data.height(), videoframe.data.bytesPerLine(), imageFormat);
     frame_image = frame_image.mirrored(false, true);
 
     QByteArray ba;
@@ -115,50 +115,50 @@ void FrameThreader::processFrame()
 
     bool isTrail = false;
     std::vector<QString> categories_type;
-    videoframe.map(QAbstractVideoBuffer::ReadOnly);
+    videoframe.data.map(QAbstractVideoBuffer::ReadOnly);
 
     //Check if trail or not
-    if(ui->TrailCheck->checkState())
+    if(videoframe.trail)
     {
         isTrail = true;
     }
 
     //Check all the states possible under trail type
-    if(ui->AsphaltCheck->checkState())
+    if(videoframe.asphalt)
     {
         categories_type.push_back("Asphalt");
     }
 
-    if(ui->DirtCheck->checkState())
+    if(videoframe.dirt)
     {
         categories_type.push_back("Dirt");
     }
 
-    if(ui->GravelCheck->checkState())
+    if(videoframe.gravel)
     {
         categories_type.push_back("Gravel");
     }
 
-    if(ui->SidewalkCheck->checkState())
+    if(videoframe.sidewalk)
     {
         categories_type.push_back("Sidewalk");
     }
 
-    if(ui->CustomCheck->checkState())
+    if(videoframe.custom)
     {
-        if(ui->CustomFolderTextBox->text().length() > 0) //Only process if non-empty
+        if(videoframe.custom_name.length() > 0) //Only process if non-empty
         {
-            categories_type.push_back(ui->CustomFolderTextBox->text());
+            categories_type.push_back(videoframe.custom_name);
         }
     }
 
     //Check all possible conditions of the trail
-    if(ui->WetCheck->checkState())
+    if(videoframe.wet)
     {
         categories_type.push_back("Wet");
     }
 
-    if(ui->DryCheck->checkState())
+    if(videoframe.dry)
     {
         categories_type.push_back("Dry");
     }

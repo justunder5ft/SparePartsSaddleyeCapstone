@@ -18,12 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     common.cpp \
+    framedata.cpp \
     framethreader.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     common.h \
+    framedata.h \
     framethreader.h \
     mainwindow.h
 
