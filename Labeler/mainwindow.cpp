@@ -225,7 +225,7 @@ void MainWindow::on_data_folder_button_released()
     QString newDataFolderName = QFileDialog::getExistingDirectory(this,
             "Choose location of data folder", path);
 
-    if(dir.exists(path))
+    if(dir.exists(path) && path.length() != 0)
     {
             data_folder = newDataFolderName;
             global_processing_thread->UpdateDataFolder(newDataFolderName);
