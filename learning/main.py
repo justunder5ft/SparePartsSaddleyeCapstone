@@ -14,6 +14,8 @@ Off-road
 @incomplete - add more convolution layers
 @incomplete - get estimate for training time
 @incomplete - look into cloud computing (if the above is too large)
+
+loss function - categorical crossentropy
 """
 from PIL import ImageFile
 from keras.models import Sequential  # this is the model
