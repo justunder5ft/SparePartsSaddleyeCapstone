@@ -1,7 +1,12 @@
-# Program To Read video
-# and Extract Frames 
+""" This short program takes a video, a ' run number for record keeping ', and a classification
+and simply extracts the video into frames 
+
+Right now it extracts every five frames out of a video but one can change that by redefining SKIP
+at the top of the program
+"""
 import cv2
 
+SKIP = 5
 
 def FrameCapture(path, run, folder, classification):
     vidObj = cv2.VideoCapture(path)  # This is the video
@@ -9,7 +14,7 @@ def FrameCapture(path, run, folder, classification):
     success = 1  # if it worked
     while success:
         success, image = vidObj.read()  # read frame from video file
-        if count % 5 == 0:  # every 5 frames is written
+        if count % SKIP == 0:  # every SKIP frames is written
             try:  # writing
                 cv2.imwrite('D:/Training Data/luke-sidewalk-demo/luke-%s-%s-%s.jpg' % (classification, run, count), image)
             except:  # if it fails, keep going as the other frames might work

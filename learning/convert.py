@@ -1,5 +1,8 @@
 """ This file takes a directory that is full of png images as input and converts them all to jpg images as that
     is the data type that we have decided to go with
+
+    NOTE: this file might actually be unneccesary - it looks like keras will resize the image for you
+    based off of what input size you give...
 """
 
 import PIL
@@ -7,12 +10,6 @@ from PIL import Image
 import sys
 import os
 import glob
-
-
-def change_to_png():
-    # TODO: implement
-    pass
-
 
 def change_to_1280_720(pathname: str = ''):
     for file in glob.glob(pathname + '*.jpg'):

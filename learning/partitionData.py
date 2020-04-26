@@ -10,13 +10,6 @@ import random as rand
 import shutil
 import time
 
-# incomplete - implement de_extract
-# incomplete - add command line parsing/options
-#   select the partition sizes
-#   give source
-#   give destination
-#   option to "de-extract"
-
 CLASSES = {'Asphalt', 'Sidewalk', 'Off-road', 'Gravel'}
 
 
@@ -47,11 +40,6 @@ def extract(path: str, new_path: str, classification: str):
         count = count + 1
 
 
-def de_extract(path: str):
-    """ Takes a path to the classification that we want to 'de-extract' back into one directory """
-    pass
-
-
 if __name__ == "__main__":
     # Keep all of this as a sort of log of what you have partitioned
     #
@@ -65,5 +53,4 @@ if __name__ == "__main__":
     # extract('D:/Training Data/cameron/asphalt_cameron/', 'D:/Training Data/partitioned_data/', 'Asphalt')
     # extract('D:/Training Data/cameron/sidewalk_cameron/', 'D:/Training Data/partitioned_data/', 'Sidewalk')
 
-    print(time.time())
-    pass
+    print(time.time()) 

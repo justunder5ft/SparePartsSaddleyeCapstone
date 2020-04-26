@@ -11,11 +11,17 @@ Sidewalk
 Gravel
 Off-road
 
-@incomplete - add more convolution layers
-@incomplete - get estimate for training time
-@incomplete - look into cloud computing (if the above is too large)
-
 loss function - categorical crossentropy
+
+
+With the current amount of data that we have to train on this classifier is simply not good.
+To compensate for this, we switched to the binary classifier found in binary.py and saved as
+binary-classifier.h5.
+Fixing this requires some more sosphicated design of course, but most of all: DATA. Going off of the '# of features'
+rule of thumb for training instances - a 1280*720 RGB image has 1280*720*3 == 2764800 training instances (roughly)
+Obviously convolutional neural nets are better at feature extraction than it would be if the image was flattened outright.
+
+Brice - 2020-04-26
 """
 from PIL import ImageFile
 from keras.models import Sequential  # this is the model
