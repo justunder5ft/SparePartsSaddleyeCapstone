@@ -21,8 +21,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 # Image format
-IMG_HEIGHT = 720
-IMG_WIDTH = 1280
+IMG_HEIGHT = 480
+IMG_WIDTH = 854
 DATA_PATH = 'D:/Training Data/partitioned_data'
 
 TRAINING_DATA_DIR, TRAINING_DATA_SIZE = 'D:/Training Data/binary-partitioned-data/train', 50928
@@ -117,5 +117,4 @@ model.evaluate_generator(  # testing the model against our test data
     workers=1
 )
 
-model.save_weights('binary-classifier.h5')  # don't really need to save models rn
-pickle.dump(model, 'binary-classifier-pickled')
+model.save_weights('binary-classifier-720.h5')  # don't really need to save models rn

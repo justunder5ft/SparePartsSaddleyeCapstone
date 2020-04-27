@@ -16,7 +16,7 @@ loss function - categorical crossentropy
 
 With the current amount of data that we have to train on this classifier is simply not good.
 To compensate for this, we switched to the binary classifier found in binary.py and saved as
-binary-classifier.h5.
+binary-classifier-720.h5.
 Fixing this requires some more sosphicated design of course, but most of all: DATA. Going off of the '# of features'
 rule of thumb for training instances - a 1280*720 RGB image has 1280*720*3 == 2764800 training instances (roughly)
 Obviously convolutional neural nets are better at feature extraction than it would be if the image was flattened outright.
@@ -30,7 +30,6 @@ from keras.layers import Flatten, Dense, Dropout, Activation  # some neat layers
 from keras import backend as K  # channels
 from keras.preprocessing.image import ImageDataGenerator  # for loading the images into the appropriate format
 import numpy as np
-import matplotlib.pyplot as plot
 import os  # setting the log level
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
