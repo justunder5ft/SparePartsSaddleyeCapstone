@@ -1,32 +1,23 @@
-# Program To Read video
-# and Extract Frames 
+""" This short program takes a video, a ' run number for record keeping ', and a classification
+and simply extracts the video into frames 
+
+Right now it extracts every five frames out of a video but one can change that by redefining SKIP
+at the top of the program
+"""
 import cv2
 
+SKIP = 5
 
-# Function to extract frames
 def FrameCapture(path, run, folder, classification):
-    # Path to video file 
-    vidObj = cv2.VideoCapture(path)
-
-    # Used as counter variable 
-    count = 0
-
-    # checks whether frames were extracted 
-    success = 1
-
+    vidObj = cv2.VideoCapture(path)  # This is the video
+    count = 0  # which frame we are on
+    success = 1  # if it worked
     while success:
-
-        # vidObj object calls read 
-        # function extract frames 
-        success, image = vidObj.read()
-
-        # Saves the frames with frame-count
-        if count % 5 == 0:
-            try:
-                cv2.imwrite(
-                    "C:/Users/bgb0074/Dev/tempVideos/%s/%s-brice-%d-%d.jpg" % (folder, classification, run, count),
-                    image)
-            except:
+        success, image = vidObj.read()  # read frame from video file
+        if count % SKIP == 0:  # every SKIP frames is written
+            try:  # writing
+                cv2.imwrite('D:/Training Data/luke-sidewalk-demo/luke-%s-%s-%s.jpg' % (classification, run, count), image)
+            except:  # if it fails, keep going as the other frames might work
                 print()
 
         count += 1
@@ -34,11 +25,12 @@ def FrameCapture(path, run, folder, classification):
 
 # Driver Code 
 if __name__ == '__main__':
-    # Calling the function 
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0668.MP4', 8, '668', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0669.MP4', 9, '669', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0670.MP4', 10, '670', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0671.MP4', 11, '671', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0672.MP4', 12, '672', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0673.mp4', 13, '673', 'sidewalk')
-    FrameCapture('C:/Users/bgb0074/Dev/tempVideos/GOPR0674.MP4', 14, '674', 'sidewalk')
+    # Calling the function
+    # FrameCapture('D:/Training Data/sidewalk_luke_1.mp4', '15', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_2.mp4', '16', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_3.mp4', '17', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_4.mp4', '18', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_5.mp4', '19', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_6.mp4', '20', 'none', 'sidewalk')
+    # FrameCapture('D:/Training Data/sidewalk_luke_7.mp4', '21', 'none', 'sidewalk')
+    FrameCapture('D:/Training Data/sidewalk_luke_8.mp4', '22', 'none', 'sidewalk')

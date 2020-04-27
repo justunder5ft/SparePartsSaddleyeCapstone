@@ -8,16 +8,19 @@
 import glob
 import random as rand
 import shutil
+import time
 
-# @incomplete - implement de_extract
-# @incomplete - add command line parsing/options
-#   select the partition sizes
-#   give source
-#   give destination
-#   option to "de-extract"
+CLASSES = {'Asphalt', 'Sidewalk', 'Off-road', 'Gravel'}
 
-def extract(path: str, new_path: str):
-    """ This takes the folder given in path and splits into 3 different sets of data """
+
+def extract(path: str, new_path: str, classification: str):
+    """ This takes the folder given in path and splits into 3 different sets of data
+
+        currently uses an 80, 10, 10 split for the train, test, validate respectively
+    """
+    if classification not in CLASSES:
+        raise ValueError("Classification not in classes")
+
     files = glob.glob(path + '*')
     number_of_files = len(glob.glob(path + '*'))
     train_count = number_of_files * .8
@@ -29,18 +32,25 @@ def extract(path: str, new_path: str):
     rand.shuffle(files)
     for file in files:
         if count < train_count:
-            shutil.copy(file, new_path + '/Train/')
+            shutil.copy(file, new_path + 'train/' + classification + '/')
         elif train_count <= count < validate_count + train_count:
-            shutil.copy(file, new_path + '/Test/')
+            shutil.copy(file, new_path + 'test/' + classification + '/')
         else:  # validate_count + train_count <= count:
-            shutil.copy(file, new_path + '/Validation/')
+            shutil.copy(file, new_path + 'validate/' + classification + '/')
         count = count + 1
 
 
-def de_extract(path: str):
-    """ Takes a path to the classification that we want to 'de-extract' back into one directory """
-    pass
-
-
 if __name__ == "__main__":
-    extract('./data/Off-road/', './partitioned_data/Off-road/')
+    # Keep all of this as a sort of log of what you have partitioned
+    #
+    # extract('D:/Training Data/data/Off-road/', 'D:/Training Data/partitioned_data/', 'Off-road')
+    # extract('D:/Training Data/data/Asphalt/', 'D:/Training Data/partitioned_data/', 'Asphalt')
+    # extract('D:/Training Data/data/Sidewalk/', 'D:/Training Data/partitioned_data/', 'Sidewalk')
+    # extract('D:/Training Data/data/Gravel/', 'D:/Training Data/partitioned_data/', 'Gravel')
+    # extract('D:/Training Data/04132020/', 'D:/Training Data/partitioned_data/', 'Gravel')
+    # extract('D:/Training Data/luke-sidewalk/', 'D:/Training Data/partitioned_data/', 'Sidewalk')
+    # extract('D:/Training Data/cam-off-road/', 'D:/Training Data/partitioned_data/', 'Off-road')
+    # extract('D:/Training Data/cameron/asphalt_cameron/', 'D:/Training Data/partitioned_data/', 'Asphalt')
+    # extract('D:/Training Data/cameron/sidewalk_cameron/', 'D:/Training Data/partitioned_data/', 'Sidewalk')
+
+    print(time.time()) 
