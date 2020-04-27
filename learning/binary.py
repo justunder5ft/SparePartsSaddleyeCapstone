@@ -117,4 +117,4 @@ model.evaluate_generator(  # testing the model against our test data
     workers=1
 )
 
-model.save_weights('binary-classifier-720.h5')  # don't really need to save models rn
+model.save_weights('binary-classifier-' + str(IMG_HEIGHT) + '.h5')  # don't really need to save models rn

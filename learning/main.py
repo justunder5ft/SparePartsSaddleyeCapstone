@@ -29,7 +29,6 @@ from keras.layers import Conv2D, MaxPool2D  # for the convolution layer and pool
 from keras.layers import Flatten, Dense, Dropout, Activation  # some neat layers that help us out 
 from keras import backend as K  # channels
 from keras.preprocessing.image import ImageDataGenerator  # for loading the images into the appropriate format
-import numpy as np
 import os  # setting the log level
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
