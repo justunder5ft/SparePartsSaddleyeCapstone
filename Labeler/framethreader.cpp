@@ -72,15 +72,18 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
         to_path = data_folder + "/Not_trail/" + real_file_name;
     }
 
+    //Convert into a Qimage format
     QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(videoframe.data.pixelFormat());
     QImage frame_image(videoframe.data.bits(), videoframe.data.width(), videoframe.data.height(), videoframe.data.bytesPerLine(), imageFormat);
-    frame_image = frame_image.mirrored(false, true);
+    frame_image = frame_image.mirrored(false, true); //Flip horizontal to have image upright
 
+    //Convert to buffer to save image to machine
     QByteArray ba;
     QBuffer buffer;
     buffer.buffer().resize(1000000);
     buffer.setBuffer(&ba);
 
+    //Open buffer for writing
     buffer.open(QIODevice::ReadWrite);
     frame_image.save(&buffer, "JPEG");
     write(to_path, ba); //Write if trail or not trail
@@ -97,11 +100,13 @@ void FrameThreader::copy_files(bool isTrail, std::vector<QString> categories_typ
          write(to_path, ba);
     }
 
+    //Update progress
     global_total_processed_frames++;
     ui->FrameProgressLabel->setText("Frames Processed: " + QString::number(global_total_processed_frames) + " of " + QString::number(global_total_enqueued_frames));
     return;
 }
 
+//This is called constantly within Run and long as the thread is active
 void FrameThreader::processFrame()
 {
     if(frame_queue.empty())
@@ -109,13 +114,14 @@ void FrameThreader::processFrame()
         return;
     }
 
+    //Get the next frame in the queue
     videoframe = frame_queue.front();
     frame_queue.pop();
     frame_count++;
 
     bool isTrail = false;
     std::vector<QString> categories_type;
-    videoframe.data.map(QAbstractVideoBuffer::ReadOnly);
+    videoframe.data.map(QAbstractVideoBuffer::ReadOnly); //Allows the data of the frame to be read and converted to an image format
 
     //Check if trail or not
     if(videoframe.trail)
@@ -163,6 +169,7 @@ void FrameThreader::processFrame()
         categories_type.push_back("Dry");
     }
 
+    //If this frame should not be skipped, then save the image to specified locations
     if(frame_count%ui->FrameStepper->value() == 0)
     {
         copy_files(isTrail, categories_type);

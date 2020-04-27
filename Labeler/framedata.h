@@ -3,6 +3,11 @@
 #include <QVideoFrame>
 #include <QString>
 
+/*
+ *  The framedata class was created to hold both the frames' raw data and the checkbox
+ *  states of the app at the time the frame is processed. Each bool corresponds to a checkbox in main
+ *  window and the custom name is the info in the custom box name.
+ */
 class framedata
 {
 public:

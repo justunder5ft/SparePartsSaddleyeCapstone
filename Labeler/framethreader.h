@@ -6,17 +6,22 @@
 #include <QVideoFrame>
 #include <QMediaPlayer>
 #include <queue>
-
+/*
+ * Framethreader is responsible for processing and saving the frames as JPEGs within the frame
+ * queue. As long as the queue that holds "framedata" objects is not empty, frames will be processed based on
+ * the skip amount specified in the main window.
+ */
 class FrameThreader : public QThread
 {
 public:
     FrameThreader();
     void setValues(int new_file_num, QMediaPlayer* new_player, Ui::MainWindow* new_ui, QString new_data_folder);
-    void run();
-    void write(QString to_path, QByteArray ba);
-    void copy_files(bool isTrail, std::vector<QString> categories_type);
-    void processFrame();
-    void UpdateDataFolder(QString new_data_folder);
+    void run(); //Thread processing, always running
+    void write(QString to_path, QByteArray ba); //Function that actually writes the files based on data gathered
+    void copy_files(bool isTrail, std::vector<QString> categories_type); //Function that determines all file locations and converts format to jpeg
+    void processFrame(); //Obtains frame data from queue and checks state of boolean values for the frame
+    void UpdateDataFolder(QString new_data_folder); //Update file save location
+    void SetVideoName(QString videoPath); //Updates name of jpeg file based on video's name
 
     int file_num = 0;
     int frame_skip = 1; // amount of frames to skip before queueing
@@ -28,16 +33,9 @@ public:
     QString data_folder;
     QString name;
     std::queue<framedata> frame_queue;
-    void SetVideoName(QString videoPath);
 
     bool status_process = false;
     bool status_kill = false;
-private slots:
-    void on_FrameStepper_valueChanged(int arg1);
-    void on_play_button_pressed();
-    void on_BullshitButton_released();
-    void on_process_button_released();
-    void on_frame_progress_box_textChanged();
 };
 
 #endif // FRAMETHREADER_H

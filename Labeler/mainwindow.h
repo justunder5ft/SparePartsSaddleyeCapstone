@@ -17,6 +17,12 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+/*
+ * Main window contains the UI component of the main window for the app. It controls all of the
+ * front-end for the app and communicates with the backend to actually save the frames pushed.
+ *
+ *
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -35,7 +41,6 @@ public:
     void durationChanged(qint64 duration); //Update slider
     void positionChanged(qint64 progress); //Update slider
     void updateDurationInfo(qint64 currentInfo); //Update slider
-    void write(std::string to_path, QByteArray ba); //Write file to a folder
     void closeEvent (QCloseEvent *event);
     //int frameCount;
 

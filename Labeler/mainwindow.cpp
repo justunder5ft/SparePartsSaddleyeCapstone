@@ -32,23 +32,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //This is cory, this won't work on your machine, and really you don't need it(Just change this to any image file path)
-    //Or comment out this section
-    std::string file_location = "C:/Users/tcarr/Pictures/Capture.png";
-    QPixmap video_frame(file_location.c_str());
-    ui->label_frame->setPixmap(video_frame.scaled(1280, 720, Qt::KeepAspectRatioByExpanding));
-    //End cory set up
 
     //Initialize video processing elements
     player = new QMediaPlayer;
     videoWidget = new QVideoWidget(ui->label_frame);
     frame_probe = new QVideoProbe;
 
-    //Connects slider to video (Will not work until i fix the buffer making everything slow)
+    //Connects slider to video
     m_slider = (ui->PlaybackSlider);
     connect(m_slider, &QSlider::sliderMoved, this, &MainWindow::seek);
     m_slider->setRange(0, player->duration() / 1000);
-    //frameCount=0;
 
     //Connect media player to ui element
     player->setVideoOutput(videoWidget);
@@ -57,10 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::durationChanged);
     connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::positionChanged);
 
-    //Path where data frames are stored, edit as needed until i modularize
+    //Path where data frames are stored
     data_folder = QDir::currentPath();
-    qDebug() << QDir::currentPath();
-    qDebug() << global_processing_thread;
 }
 
 MainWindow::~MainWindow()
@@ -68,14 +59,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//(Will change name eventually) Select video and prepares it for play (hard coded to video in my local system at the moment)
+//Select video and prepares it for play (hard coded to video in my local system at the moment)
 void MainWindow::on_process_button_released()
 {
-    file_num = 0;
-    global_processing_thread->status_process = true;
-    global_processing_thread->setValues(file_num, player, ui, data_folder);
+    file_num = 0; //Resent file number to 0
+    global_processing_thread->status_process = true; //Start the thread (only really matters the first time play is hit)
+    global_processing_thread->setValues(file_num, player, ui, data_folder); //Set values based on current loaded video
 
-    //Set up frame prober
+    //Set up frame prober (This is what actually grabs individual frames)
     if(frame_probe->setSource(player))
     {
         connect(frame_probe, &QVideoProbe::videoFrameProbed, this, &MainWindow::processFrame);// Returns true, hopefully.
@@ -97,13 +88,12 @@ void MainWindow::on_process_button_released()
 }
 
 /* Code taken from Qt's media player example */
-
 void MainWindow::durationChanged(qint64 duration)
 {
     m_duration = duration / 1000;
     m_slider->setMaximum(m_duration);
 }
-
+//Updates video slider position
 void MainWindow::positionChanged(qint64 progress)
 {
     if (!m_slider->isSliderDown())
@@ -114,11 +104,13 @@ void MainWindow::positionChanged(qint64 progress)
        //qDebug() << "Player Position" << player->position();
 }
 
+//Allows user to change slider position and change video state
 void MainWindow::seek(int seconds)
 {
     player->setPosition(seconds * 1000);
 }
 
+//Updates current time stamp of the video (Not used in our app but could be useful)
 void MainWindow::updateDurationInfo(qint64 currentInfo)
 {
     QString tStr;
@@ -135,11 +127,11 @@ void MainWindow::updateDurationInfo(qint64 currentInfo)
     //m_labelDuration->setText(tStr);
 }
 
-//Process by frame and save frame to appropriate locations
+//Process by frame and save frame to appropriate locations (This is done for EVERY individual frame in the video
 void MainWindow::processFrame(QVideoFrame the_frame) {
-        framedata temp;
-        temp.data = the_frame;
-        temp.asphalt = ui->AsphaltCheck->checkState();
+        framedata temp; //New frame data object
+        temp.data = the_frame; //QVideoFrame object (Holds frame data)
+        temp.asphalt = ui->AsphaltCheck->checkState(); //Booleans for check boxes
         temp.gravel = ui->GravelCheck->checkState();
         temp.dirt = ui->DirtCheck->checkState();
         temp.sidewalk = ui->SidewalkCheck->checkState();
@@ -147,21 +139,12 @@ void MainWindow::processFrame(QVideoFrame the_frame) {
         temp.dry = ui->DryCheck->checkState();
         temp.wet = ui->WetCheck->checkState();
         temp.custom = ui->CustomCheck->checkState();
-        temp.custom_name = ui->CustomFolderTextBox->text();
+        temp.custom_name = ui->CustomFolderTextBox->text(); //Text of custom check box
         global_processing_thread->frame_queue.push(temp); // push it to the queue for processing
         global_total_enqueued_frames++;
 }
 
-//Write data to actual file locations
-void MainWindow::write(std::string to_path, QByteArray ba)
-{
-    QFile file_location(to_path.c_str());
-
-    file_location.open(QIODevice::ReadWrite);
-    file_location.write(ba);
-    file_location.close();
-}
-
+//Desctructor for mainwindow, kills thread then exits
 void MainWindow::closeEvent (QCloseEvent *event)
 {
     QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Labeler",
@@ -193,11 +176,13 @@ void MainWindow::on_pause_button_released()
     player->pause();
 }
 
+//Function that opens discovery window to select video file (Only searched for .mp4s but can be modified.
 void MainWindow::on_file_select_button_released()
 {
     QString path = qApp->applicationDirPath();
     QDir dir;
 
+    //Add more formats to this function to add more formats
     QString fileName = QFileDialog::getOpenFileName(this,
             "Choose video file", path,
             "Video (*.mp4)");
@@ -216,7 +201,7 @@ void MainWindow::on_file_select_button_released()
     file.close();
 }
 
-
+//Function that opens discovery window to save location.
 void MainWindow::on_data_folder_button_released()
 {
     QString path = qApp->applicationDirPath();
