@@ -1,7 +1,7 @@
 # SparePartsSaddleyeCapstone
 CSCE 4901.001 - Capstone 2020  
 ## Developers  
-* Antonio Banderas
+* Anthony Carr
 * Brice Brosig
 * Cameron Donner
 * Ephraim Jackson
