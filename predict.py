@@ -67,7 +67,8 @@ model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-img = cv2.imread('test-asphalt-brice-4-0.jpg')
+# img = cv2.imread('test-asphalt-brice-4-0.jpg')
+img = cv2.imread('test-sidewalk-brice-3-1915.jpg')
 img = cv2.resize(img, (IMG_WIDTH, IMG_HEIGHT))
 img = np.reshape(img, [1, IMG_WIDTH, IMG_HEIGHT, 3])
 
