@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1400</width>
+    <height>1000</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label_frame">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>60</y>
+      <width>1280</width>
+      <height>720</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="TrailCheck">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trail</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="AsphaltCheck">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Asphalt</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="DirtCheck">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dirt</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="GravelCheck">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Gravel</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="SidewalkCheck">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sidewalk</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WetCheck">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wet</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="DryCheck">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>850</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dry</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="process_button">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>810</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Process Media</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="PlaybackSlider">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>890</y>
+      <width>1251</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="play_button">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>800</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Play</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pause_button">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>830</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pause</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="file_select_button">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>810</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load Media</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="data_folder_button">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>850</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set Data Folder</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="FrameStepper">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>850</y>
+      <width>43</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string extracomment="Capture a Photo every _ frames"/>
+    </property>
+    <property name="toolTipDuration">
+     <number>3</number>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="FrameSkipLabel">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>850</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Frame skip amount</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="FrameProgressLabel">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>850</y>
+      <width>371</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Frames Processed: 0 of 0</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CustomCheck">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>810</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="CustomFolderTextBox">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>810</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1400</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuLabeler">
+    <property name="title">
+     <string>E</string>
+    </property>
+   </widget>
+   <addaction name="menuLabeler"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
