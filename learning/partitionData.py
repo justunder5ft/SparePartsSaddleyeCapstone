@@ -53,4 +53,6 @@ if __name__ == "__main__":
     # extract('D:/Training Data/cameron/asphalt_cameron/', 'D:/Training Data/partitioned_data/', 'Asphalt')
     # extract('D:/Training Data/cameron/sidewalk_cameron/', 'D:/Training Data/partitioned_data/', 'Sidewalk')
 
+    # add in the calls with paths relative to your machine to use
+
     print(time.time()) 
